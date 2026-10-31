@@ -1,0 +1,6 @@
+@LabBridge.Api_HostAddress = http://localhost:5188
+
+GET {{LabBridge.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

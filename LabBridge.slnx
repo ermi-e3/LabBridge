@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LabBridge.Api/LabBridge.Api.csproj" />
+    <Project Path="src/LabBridge.Application/LabBridge.Application.csproj" />
+    <Project Path="src/LabBridge.Domain/LabBridge.Domain.csproj" />
+    <Project Path="src/LabBridge.Infrastructure/LabBridge.Infrastructure.csproj" />
+  </Folder>
+</Solution>
