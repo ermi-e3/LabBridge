@@ -1,5 +1,4 @@
 using LabBridge.Domain.Features.InstrumentManagement.Entities;
-using LabBridge.Domain.Features.InstrumentManagement.Enums;
 using LabBridge.Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -18,6 +17,10 @@ public sealed class RouteConfiguration : IEntityTypeConfiguration<Route>
         });
 
         builder.HasDomainAssignedKey();
+        // CHANGE: explicit tenant alternate key (organization_id, id). Route is the principal of composite FKs from
+        // DeliveryItem, DeliveryRequest, RouteDeliveryPolicy, Order, Result and MappingRun; the key existed only
+        // implicitly through their HasPrincipalKey calls. Same constraint, no schema difference.
+        builder.HasTenantAlternateKey();
         builder.Property(x => x.Name).HasCaseInsensitiveText(200).IsRequired();
         builder.Property(x => x.MessageKind).HasEnumAsString(10);
         builder.Property(x => x.Topology).HasEnumAsString(20);
@@ -48,12 +51,7 @@ public sealed class RouteConfiguration : IEntityTypeConfiguration<Route>
 
         builder.HasIndex(x => new { x.OrganizationId, x.Name }).IsUnique();
         builder
-            .HasIndex(x => new
-            {
-                x.OrganizationId,
-                x.SourceConnectorId,
-                x.MessageKind,
-            })
+            .HasIndex(x => new { x.OrganizationId, x.SourceConnectorId, x.MessageKind })
             .IsUnique()
             .HasFilter("status = 'Enabled'")
             .HasDatabaseName("ux_routes_enabled_source_kind");
