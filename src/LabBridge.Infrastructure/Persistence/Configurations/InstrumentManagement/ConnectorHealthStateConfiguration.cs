@@ -15,7 +15,7 @@ public sealed class ConnectorHealthStateConfiguration
 {
     public void Configure(EntityTypeBuilder<ConnectorHealthState> builder)
     {
-        builder.ToTable("connector_health_states");
+        builder.ToTable("connector_health_states", "instrument_management");
         builder.HasDomainAssignedKey();
         builder
             .Property(x => x.Status)

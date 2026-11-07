@@ -10,7 +10,7 @@ public sealed class ExternalSystemConfiguration : IEntityTypeConfiguration<Exter
 {
     public void Configure(EntityTypeBuilder<ExternalSystem> builder)
     {
-        builder.ToTable("external_systems");
+        builder.ToTable("external_systems", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.HasTenantAlternateKey();
         builder.Property(x => x.Name).HasCaseInsensitiveText(200).IsRequired();

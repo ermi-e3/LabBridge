@@ -11,7 +11,7 @@ public sealed class InstrumentVerificationConfiguration
 {
     public void Configure(EntityTypeBuilder<InstrumentVerification> builder)
     {
-        builder.ToTable("instrument_verifications");
+        builder.ToTable("instrument_verifications", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Kind).HasEnumAsString(10);
         builder.Property(x => x.Outcome).HasEnumAsString(10);

@@ -12,7 +12,7 @@ public sealed class MappingSetVersionConfiguration : IEntityTypeConfiguration<Ma
     public void Configure(EntityTypeBuilder<MappingSetVersion> builder)
     {
         builder.ToTable(
-                "mapping_set_versions",
+                "mapping_set_versions", "testCode_mapping",
                 t =>
                 {
                     t.HasCheckConstraint(

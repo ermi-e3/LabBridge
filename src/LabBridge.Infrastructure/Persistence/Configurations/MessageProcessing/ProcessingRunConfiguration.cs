@@ -13,7 +13,7 @@ public sealed class ProcessingRunConfiguration : IEntityTypeConfiguration<Proces
     public void Configure(EntityTypeBuilder<ProcessingRun> builder)
     {
         builder.ToTable(
-            "processing_runs",
+            "processing_runs", "message_processing",
             t =>
             {
                 t.HasCheckConstraint(

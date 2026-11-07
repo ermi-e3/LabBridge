@@ -29,7 +29,7 @@ public sealed class InboundMessageConfiguration : IEntityTypeConfiguration<Inbou
         //    }
         //);
         // added
-        builder.ToTable("inbound_messages", t =>
+        builder.ToTable("inbound_messages", "message_ingestion", t =>
         {
             t.HasCheckConstraint("ck_inbound_messages_original_required",
                 "receipt_outcome = 'Accepted' OR original_message_id IS NOT NULL");
@@ -43,7 +43,7 @@ public sealed class InboundMessageConfiguration : IEntityTypeConfiguration<Inbou
         builder
             .Property(x => x.ReceiptSequence)
             .ValueGeneratedOnAdd()
-            .HasDefaultValueSql("nextval('inbound_message_receipt_seq')");
+            .HasDefaultValueSql("nextval('inbound_message_receipt_seq')"); //inbound_message_receipt_seq
         builder.Property(x => x.ReceivedAt).IsRequired();
         builder.Property(x => x.Status).HasEnumAsString(20);
         builder.Property(x => x.StatusReason).HasMaxLength(500);

@@ -18,7 +18,7 @@ public sealed class UserTokenConfiguration : IEntityTypeConfiguration<IdentityUs
 {
     public void Configure(EntityTypeBuilder<IdentityUserToken<Guid>> builder)
     {
-        builder.ToTable("user_tokens");
+        builder.ToTable("user_tokens", "identity");
 
         builder
             .HasOne<ApplicationUser>()

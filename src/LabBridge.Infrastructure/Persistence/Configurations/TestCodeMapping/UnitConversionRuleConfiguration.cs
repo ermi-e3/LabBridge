@@ -12,7 +12,7 @@ public sealed class UnitConversionRuleConfiguration : IEntityTypeConfiguration<U
     public void Configure(EntityTypeBuilder<UnitConversionRule> builder)
     {
         builder.ToTable(
-            "unit_conversion_rules",
+            "unit_conversion_rules", "testCode_mapping",
             t =>
             {
                 t.HasCheckConstraint("ck_unit_conversion_rules_units_differ", "from_unit_concept_id <> to_unit_concept_id");

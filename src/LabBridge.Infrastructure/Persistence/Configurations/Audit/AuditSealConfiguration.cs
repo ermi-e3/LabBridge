@@ -10,7 +10,7 @@ public sealed class AuditSealConfiguration : IEntityTypeConfiguration<AuditSeal>
 {
     public void Configure(EntityTypeBuilder<AuditSeal> builder)
     {
-        builder.ToTable("audit_seals");
+        builder.ToTable("audit_seals", "audit");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.SealSequence).IsRequired();
         builder.Property(x => x.FromEventSequence).IsRequired();

@@ -16,7 +16,7 @@ public sealed class MappingSetConfiguration : IEntityTypeConfiguration<MappingSe
     public void Configure(EntityTypeBuilder<MappingSet> builder)
     {
         builder.ToTable(
-            "mapping_sets",
+            "mapping_sets", "testCode_mapping",
             t =>
                 t.HasCheckConstraint(
                     "ck_mapping_sets_counterparty",

@@ -19,7 +19,7 @@ public sealed class ApplicationUserConfiguration : IEntityTypeConfiguration<Appl
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        builder.ToTable("users");
+        builder.ToTable("users", "identity");
 
         // Keys are assigned by the domain (ApplicationUser.Invite); the database never generates them.
         builder.Property(x => x.Id).ValueGeneratedNever();

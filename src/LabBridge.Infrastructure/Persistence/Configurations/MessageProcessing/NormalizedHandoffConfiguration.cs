@@ -11,7 +11,7 @@ public sealed class NormalizedHandoffConfiguration : IEntityTypeConfiguration<No
     public void Configure(EntityTypeBuilder<NormalizedHandoff> builder)
     {
         builder.ToTable(
-            "normalized_handoffs",
+            "normalized_handoffs", "message_processing",
             t =>
                 t.HasCheckConstraint(
                     "ck_normalized_handoffs_lease",

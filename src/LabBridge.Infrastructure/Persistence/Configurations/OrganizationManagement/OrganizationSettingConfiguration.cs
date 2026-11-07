@@ -10,7 +10,7 @@ public sealed class OrganizationSettingConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<OrganizationSetting> builder)
     {
         //builder.ToTable("organization_settings");
-        builder.ToTable("organization_settings", t => t.HasCheckConstraint("ck_organization_settings_version", "version >= 1"));
+        builder.ToTable("organization_settings", "organization_management", t => t.HasCheckConstraint("ck_organization_settings_version", "version >= 1"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.SettingDefinitionId).IsRequired();
         builder.Property(x => x.ValueJson).HasJsonbColumn().IsRequired();

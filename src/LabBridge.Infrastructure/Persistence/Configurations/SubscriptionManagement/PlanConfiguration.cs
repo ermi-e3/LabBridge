@@ -11,7 +11,7 @@ public sealed class PlanConfiguration : IEntityTypeConfiguration<Plan>
 {
     public void Configure(EntityTypeBuilder<Plan> builder)
     {
-        builder.ToTable("plans",
+        builder.ToTable("plans", "subscription_management",
             t =>
             {
                 t.HasCheckConstraint("ck_plans_version", "version >= 1");

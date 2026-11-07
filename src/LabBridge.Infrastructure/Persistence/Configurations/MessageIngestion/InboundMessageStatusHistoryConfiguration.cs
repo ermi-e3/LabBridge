@@ -10,7 +10,7 @@ public sealed class InboundMessageStatusHistoryConfiguration
 {
     public void Configure(EntityTypeBuilder<InboundMessageStatusHistory> builder)
     {
-        builder.ToTable("inbound_message_status_history");
+        builder.ToTable("inbound_message_status_history", "message_ingestion");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.FromStatus).HasEnumAsString(20);
         builder.Property(x => x.ToStatus).HasEnumAsString(20);

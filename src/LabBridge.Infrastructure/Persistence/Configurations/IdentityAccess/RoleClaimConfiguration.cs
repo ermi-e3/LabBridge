@@ -17,7 +17,7 @@ public sealed class RoleClaimConfiguration : IEntityTypeConfiguration<IdentityRo
 {
     public void Configure(EntityTypeBuilder<IdentityRoleClaim<Guid>> builder)
     {
-        builder.ToTable("role_claims");
+        builder.ToTable("role_claims", "identity");
 
         builder
             .HasOne<ApplicationRole>()

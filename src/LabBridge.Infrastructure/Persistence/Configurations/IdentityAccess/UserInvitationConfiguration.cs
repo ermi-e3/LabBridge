@@ -11,7 +11,7 @@ public sealed class UserInvitationConfiguration : IEntityTypeConfiguration<UserI
 {
     public void Configure(EntityTypeBuilder<UserInvitation> builder)
     {
-        builder.ToTable("user_invitations");
+        builder.ToTable("user_invitations", "identity");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.UserId).IsRequired();
         builder.Property(x => x.TokenHash).HasColumnType("bytea").IsRequired();

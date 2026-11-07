@@ -11,7 +11,7 @@ public sealed class AdapterTypeConfiguration : IEntityTypeConfiguration<AdapterT
     public void Configure(EntityTypeBuilder<AdapterType> builder)
     {
         //builder.ToTable("adapter_types");
-        builder.ToTable("adapter_types", t => t.HasCheckConstraint("ck_adapter_types_directions", "cardinality(supported_directions) >= 1"));
+        builder.ToTable("adapter_types", "instrument_management", t => t.HasCheckConstraint("ck_adapter_types_directions", "cardinality(supported_directions) >= 1"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Code).HasMaxLength(100).IsRequired();
         builder.Property(x => x.DisplayName).HasMaxLength(200).IsRequired();

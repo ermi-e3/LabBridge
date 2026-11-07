@@ -10,7 +10,7 @@ public sealed class ReportRunConfiguration : IEntityTypeConfiguration<ReportRun>
 {
     public void Configure(EntityTypeBuilder<ReportRun> builder)
     {
-        builder.ToTable("report_runs",
+        builder.ToTable("report_runs", "reporting",
             t =>
             {
                 // The result exists exactly for a successful run; it is cleared on expiry.

@@ -20,7 +20,7 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         //builder.ToTable("lab_order");
         builder.ToTable(
-                    "lab_order",
+                    "lab_order", "orderResult_management",
                     t =>
                     {
                         t.HasCheckConstraint(

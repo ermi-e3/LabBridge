@@ -11,7 +11,7 @@ public sealed class OrganizationStatusHistoryConfiguration
 {
     public void Configure(EntityTypeBuilder<OrganizationStatusHistory> builder)
     {
-        builder.ToTable("organization_status_history",
+        builder.ToTable("organization_status_history", "organization_management",
              t =>
              {
                  t.HasCheckConstraint("ck_organization_status_history_mode", "(to_status = 'Suspended') = (suspension_mode IS NOT NULL)");

@@ -9,7 +9,7 @@ public sealed class SubscriptionHistoryConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<SubscriptionHistory> builder)
     {
-        builder.ToTable("subscription_history",
+        builder.ToTable("subscription_history", "subscription_management",
             t =>
                 // The first row has neither a previous plan nor a previous status; every later row has both.
                  t.HasCheckConstraint("ck_subscription_history_from", "(from_plan_id IS NULL) = (from_status IS NULL)"));

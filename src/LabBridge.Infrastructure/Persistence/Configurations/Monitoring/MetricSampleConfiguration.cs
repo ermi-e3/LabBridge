@@ -11,7 +11,7 @@ public sealed class MetricSampleConfiguration : IEntityTypeConfiguration<MetricS
     public void Configure(EntityTypeBuilder<MetricSample> builder)
     {
         //builder.ToTable("metric_samples");
-        builder.ToTable("metric_samples", t => t.HasCheckConstraint("ck_metric_samples_counter", "kind <> 'Counter' OR value >= 0"));  
+        builder.ToTable("metric_samples", "monitoring", t => t.HasCheckConstraint("ck_metric_samples_counter", "kind <> 'Counter' OR value >= 0"));  
         builder.HasDomainAssignedKey();
         builder.Property(x => x.MetricName).HasMaxLength(100).IsRequired();
         builder.Property(x => x.DimensionsKey).HasMaxLength(300).IsRequired();

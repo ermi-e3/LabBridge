@@ -14,7 +14,7 @@ public sealed class ApplicationRoleConfiguration : IEntityTypeConfiguration<Appl
 {
     public void Configure(EntityTypeBuilder<ApplicationRole> builder)
     {
-        builder.ToTable("roles");
+        builder.ToTable("roles", "identity");
 
         builder.Property(x => x.Id).ValueGeneratedNever();
 

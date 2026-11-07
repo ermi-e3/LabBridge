@@ -14,7 +14,7 @@ public sealed class DeliveryItemConfiguration : IEntityTypeConfiguration<Deliver
     public void Configure(EntityTypeBuilder<DeliveryItem> builder)
     {
         builder.ToTable(
-            "delivery_items",
+            "delivery_items", "delivery_management",
             t =>
             {
                 t.HasCheckConstraint(

@@ -11,7 +11,7 @@ public sealed class ConnectorConfigRevisionConfiguration
 {
     public void Configure(EntityTypeBuilder<ConnectorConfigRevision> builder)
     {
-        builder.ToTable("connector_config_revisions");
+        builder.ToTable("connector_config_revisions", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.ConfigVersion).IsRequired();
         builder.Property(x => x.SnapshotJson).HasJsonbColumn().IsRequired();

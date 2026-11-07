@@ -12,7 +12,7 @@ public sealed class MappingEntryConfiguration : IEntityTypeConfiguration<Mapping
 {
     public void Configure(EntityTypeBuilder<MappingEntry> builder)
     {
-        builder.ToTable("mapping_entries");
+        builder.ToTable("mapping_entries", "testCode_mapping");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Direction).HasEnumAsString(15);
         builder.Property(x => x.ExternalCode).HasMaxLength(100).IsRequired();

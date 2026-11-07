@@ -10,7 +10,7 @@ public sealed class DeliveryAttemptConfiguration : IEntityTypeConfiguration<Deli
 {
     public void Configure(EntityTypeBuilder<DeliveryAttempt> builder)
     {
-        builder.ToTable("delivery_attempts", t =>
+        builder.ToTable("delivery_attempts", "delivery_management", t =>
         {
             t.HasCheckConstraint("ck_delivery_attempts_completed", "(attempt_result = 'InProgress') = (completed_at IS NULL)");
         });

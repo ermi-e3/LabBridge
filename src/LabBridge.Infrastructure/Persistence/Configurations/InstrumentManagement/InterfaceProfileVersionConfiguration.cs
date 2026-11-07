@@ -11,7 +11,7 @@ public sealed class InterfaceProfileVersionConfiguration
 {
     public void Configure(EntityTypeBuilder<InterfaceProfileVersion> builder)
     {
-        builder.ToTable("interface_profile_versions");
+        builder.ToTable("interface_profile_versions", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Version).HasMaxLength(30).IsRequired();
         builder.Property(x => x.Status).HasEnumAsString(12);

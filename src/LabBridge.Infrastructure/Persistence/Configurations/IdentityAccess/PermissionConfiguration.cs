@@ -9,7 +9,7 @@ public sealed class PermissionConfiguration : IEntityTypeConfiguration<Permissio
 {
     public void Configure(EntityTypeBuilder<Permission> builder)
     {
-        builder.ToTable("permissions");
+        builder.ToTable("permissions", "identity");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Code).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(500).IsRequired();

@@ -15,7 +15,7 @@ public sealed class AlertConfiguration : IEntityTypeConfiguration<Alert>
 {
     public void Configure(EntityTypeBuilder<Alert> builder)
     {
-        builder.ToTable("alerts",
+        builder.ToTable("alerts", "monitoring",
                 t =>
                 {
                     t.HasCheckConstraint("ck_alerts_resolve_reason", "status <> 'Resolved' OR resolve_reason IS NOT NULL");

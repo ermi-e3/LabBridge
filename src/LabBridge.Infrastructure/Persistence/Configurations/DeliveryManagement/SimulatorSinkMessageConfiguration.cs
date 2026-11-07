@@ -13,7 +13,7 @@ public sealed class SimulatorSinkMessageConfiguration
     public void Configure(EntityTypeBuilder<SimulatorSinkMessage> builder)
     {
         builder.ToTable(
-            "simulator_sink_messages",
+            "simulator_sink_messages", "delivery_management",
             t =>
                 t.HasCheckConstraint(
                     "ck_simulator_sink_messages_purged",

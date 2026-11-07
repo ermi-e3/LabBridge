@@ -10,7 +10,7 @@ public sealed class CanonicalConceptConfiguration : IEntityTypeConfiguration<Can
 {
     public void Configure(EntityTypeBuilder<CanonicalConcept> builder)
     {
-        builder.ToTable("canonical_concepts");
+        builder.ToTable("canonical_concepts", "testCode_mapping");
         builder.HasDomainAssignedKey();
         builder.HasTenantAlternateKey();
         builder.Property(x => x.Domain).HasEnumAsString(15);

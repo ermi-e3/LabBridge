@@ -11,7 +11,7 @@ public sealed class AuditActionDefinitionConfiguration
 {
     public void Configure(EntityTypeBuilder<AuditActionDefinition> builder)
     {
-        builder.ToTable("audit_action_definitions");
+        builder.ToTable("audit_action_definitions","audit");
         builder.HasKey(x => x.ActionCode);
         builder.Property(x => x.ActionCode).HasMaxLength(100).ValueGeneratedNever();
         builder.Property(x => x.Domain).HasMaxLength(50).IsRequired();

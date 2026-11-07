@@ -11,7 +11,7 @@ public sealed class RawPayloadConfiguration : IEntityTypeConfiguration<RawPayloa
     public void Configure(EntityTypeBuilder<RawPayload> builder)
     {
         builder.ToTable(
-            "raw_payloads",
+            "raw_payloads", "message_ingestion",
             t =>
             {
                 t.HasCheckConstraint(

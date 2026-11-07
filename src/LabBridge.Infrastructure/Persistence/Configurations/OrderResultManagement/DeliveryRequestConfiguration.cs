@@ -21,7 +21,7 @@ public sealed class DeliveryRequestConfiguration : IEntityTypeConfiguration<Deli
         //        )
         //);
         builder.ToTable(
-                    "delivery_requests",
+                    "delivery_requests", "orderResult_management",
                     t =>
                     {
                         t.HasCheckConstraint(

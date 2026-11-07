@@ -15,7 +15,7 @@ public sealed class AcknowledgmentRecordConfiguration
         //builder.ToTable("acknowledgment_records");
 
         // added check constraints to ensure that match_status and attempt_id/matched_at are consistent
-        builder.ToTable("acknowledgment_records", t =>
+        builder.ToTable("acknowledgment_records", "delivery_management", t =>
         {
             t.HasCheckConstraint("ck_acknowledgment_records_match", "(match_status = 'Matched') = (attempt_id IS NOT NULL)");
             t.HasCheckConstraint("ck_acknowledgment_records_matched_at", "(match_status = 'Matched') = (matched_at IS NOT NULL)");

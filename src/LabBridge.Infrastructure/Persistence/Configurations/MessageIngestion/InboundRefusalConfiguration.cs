@@ -12,7 +12,7 @@ public sealed class InboundRefusalConfiguration : IEntityTypeConfiguration<Inbou
     public void Configure(EntityTypeBuilder<InboundRefusal> builder)
     {
         //builder.ToTable("inbound_refusals");
-        builder.ToTable("inbound_refusals", t => t.HasCheckConstraint("ck_inbound_refusals_size", "size_bytes IS NULL OR size_bytes >= 0"));
+        builder.ToTable("inbound_refusals", "message_ingestion", t => t.HasCheckConstraint("ck_inbound_refusals_size", "size_bytes IS NULL OR size_bytes >= 0"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Reason).HasEnumAsString(30);
         builder.Property(x => x.OrganizationStatus).HasMaxLength(20);

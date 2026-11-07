@@ -9,7 +9,7 @@ public sealed class LimitDefinitionConfiguration : IEntityTypeConfiguration<Limi
 {
     public void Configure(EntityTypeBuilder<LimitDefinition> builder)
     {
-        builder.ToTable("limit_definitions");
+        builder.ToTable("limit_definitions", "subscription_management");
         builder.Property(x => x.LimitKey).HasMaxLength(100).ValueGeneratedNever();
         builder.Property(x => x.Kind).HasEnumAsString(10);
         builder.Property(x => x.Unit).HasMaxLength(50);

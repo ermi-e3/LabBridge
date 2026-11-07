@@ -17,7 +17,7 @@ public sealed class ResultConfiguration : IEntityTypeConfiguration<Result>
     {
         //builder.ToTable("lab_result");
         builder.ToTable(
-                    "lab_result",
+                    "lab_result", "orderResult_management",
                     t =>
                     {
                         t.HasCheckConstraint("ck_lab_result_correlation", "(correlation_status = 'Matched') = (order_id IS NOT NULL)");

@@ -10,7 +10,7 @@ public sealed class AuditSpoolItemConfiguration : IEntityTypeConfiguration<Audit
 {
     public void Configure(EntityTypeBuilder<AuditSpoolItem> builder)
     {
-        builder.ToTable("audit_spool_items");
+        builder.ToTable("audit_spool_items", "audit");
         builder.HasDomainAssignedKey();
         builder.UseXminConcurrency();   // a second worker updating the same item fails with DbUpdateConcurrencyException
         builder.Property(x => x.EventJson).HasJsonbColumn().IsRequired();

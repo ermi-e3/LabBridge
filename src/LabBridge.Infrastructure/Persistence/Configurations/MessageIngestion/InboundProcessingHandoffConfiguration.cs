@@ -13,7 +13,7 @@ public sealed class InboundProcessingHandoffConfiguration
     public void Configure(EntityTypeBuilder<InboundProcessingHandoff> builder)
     {
         builder.ToTable(
-            "inbound_processing_handoffs",
+            "inbound_processing_handoffs", "message_ingestion",
             t =>
             {
                 t.HasCheckConstraint(

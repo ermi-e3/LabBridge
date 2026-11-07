@@ -19,7 +19,7 @@ public sealed class ReconciliationCaseConfiguration : IEntityTypeConfiguration<R
         //            "(resolution IS NOT NULL) = (status = 'Resolved')"
         //        )
         //);
-        builder.ToTable("reconciliation_cases", t =>
+        builder.ToTable("reconciliation_cases", "delivery_management", t =>
         {
             t.HasCheckConstraint("ck_reconciliation_cases_resolution", "(resolution IS NOT NULL) = (status = 'Resolved')");
             t.HasCheckConstraint("ck_reconciliation_cases_resolved_at", "(resolved_at IS NOT NULL) = (status = 'Resolved')");

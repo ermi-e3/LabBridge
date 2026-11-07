@@ -9,7 +9,7 @@ public sealed class AlertStateHistoryConfiguration : IEntityTypeConfiguration<Al
 {
     public void Configure(EntityTypeBuilder<AlertStateHistory> builder)
     {
-        builder.ToTable("alert_state_history");
+        builder.ToTable("alert_state_history", "monitoring");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.FromStatus).HasEnumAsString(15);
         builder.Property(x => x.ToStatus).HasEnumAsString(15);

@@ -11,7 +11,7 @@ public sealed class ParserTypeConfiguration : IEntityTypeConfiguration<ParserTyp
     public void Configure(EntityTypeBuilder<ParserType> builder)
     {
         //builder.ToTable("parser_types");
-        builder.ToTable("parser_types", t => t.HasCheckConstraint("ck_parser_types_kinds", "cardinality(supported_message_kinds) >= 1"));
+        builder.ToTable("parser_types", "message_processing", t => t.HasCheckConstraint("ck_parser_types_kinds", "cardinality(supported_message_kinds) >= 1"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Code).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Version).HasMaxLength(30).IsRequired();

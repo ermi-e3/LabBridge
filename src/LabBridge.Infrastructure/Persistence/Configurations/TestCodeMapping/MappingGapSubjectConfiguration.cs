@@ -9,7 +9,7 @@ public sealed class MappingGapSubjectConfiguration : IEntityTypeConfiguration<Ma
 {
     public void Configure(EntityTypeBuilder<MappingGapSubject> builder)
     {
-        builder.ToTable("mapping_gap_subjects");
+        builder.ToTable("mapping_gap_subjects", "testCode_mapping");
         builder.HasKey(x => new
         {
             x.GapId,

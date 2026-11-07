@@ -12,7 +12,7 @@ public sealed class RouteDeliveryPolicyConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<RouteDeliveryPolicy> builder)
     {
         builder.ToTable(
-            "route_delivery_policies",
+            "route_delivery_policies", "delivery_management",
             t =>
             {
                 t.HasCheckConstraint("ck_route_delivery_policies_attempts", "max_attempts >= 1");

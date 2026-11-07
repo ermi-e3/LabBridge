@@ -14,7 +14,7 @@ public sealed class DeduplicationKeyConfiguration : IEntityTypeConfiguration<Ded
 {
     public void Configure(EntityTypeBuilder<DeduplicationKey> builder)
     {
-        builder.ToTable("deduplication_keys");
+        builder.ToTable("deduplication_keys", "message_ingestion");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.DedupKey).HasMaxLength(128).IsRequired();
         builder.Property(x => x.ContentHash).HasMaxLength(64).IsFixedLength().IsRequired();

@@ -10,7 +10,7 @@ public sealed class SettingDefinitionConfiguration : IEntityTypeConfiguration<Se
 {
     public void Configure(EntityTypeBuilder<SettingDefinition> builder)
     {
-        builder.ToTable("setting_definitions");
+        builder.ToTable("setting_definitions", "organization_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Key).HasMaxLength(100).IsRequired();
         builder.Property(x => x.ValueType).HasEnumAsString(20);

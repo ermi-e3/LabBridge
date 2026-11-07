@@ -10,7 +10,7 @@ public sealed class InterfaceProfileConfiguration : IEntityTypeConfiguration<Int
 {
     public void Configure(EntityTypeBuilder<InterfaceProfile> builder)
     {
-        builder.ToTable("interface_profiles");
+        builder.ToTable("interface_profiles", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Code).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Name).HasMaxLength(200).IsRequired();

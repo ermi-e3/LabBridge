@@ -10,7 +10,7 @@ public sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscri
 {
     public void Configure(EntityTypeBuilder<Subscription> builder)
     {
-        builder.ToTable("subscriptions");
+        builder.ToTable("subscriptions", "subscription_management");
         builder.HasDomainAssignedKey();
         builder.HasTenantAlternateKey();
         builder.Property(x => x.Status).HasEnumAsString(10);

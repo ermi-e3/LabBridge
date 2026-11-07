@@ -10,7 +10,7 @@ public sealed class RouteConfiguration : IEntityTypeConfiguration<Route>
 {
     public void Configure(EntityTypeBuilder<Route> builder)
     {
-        builder.ToTable("routes", t =>
+        builder.ToTable("routes", "instrument_management", t =>
         {
             t.HasCheckConstraint("ck_routes_endpoints_differ", "source_connector_id <> destination_connector_id");
             t.HasCheckConstraint("ck_routes_message_kind", "message_kind IN ('Order','Result')");

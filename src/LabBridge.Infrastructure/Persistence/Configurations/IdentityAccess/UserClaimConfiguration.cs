@@ -15,7 +15,7 @@ public sealed class UserClaimConfiguration : IEntityTypeConfiguration<IdentityUs
 {
     public void Configure(EntityTypeBuilder<IdentityUserClaim<Guid>> builder)
     {
-        builder.ToTable("user_claims");
+        builder.ToTable("user_claims", "identity");
 
         // IMPROVEMENT: snake_case table names and RESTRICT instead of Identity's CASCADE (users are never hard-deleted).
         builder

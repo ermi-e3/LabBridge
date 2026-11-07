@@ -10,7 +10,7 @@ public sealed class UsageCounterConfiguration : IEntityTypeConfiguration<UsageCo
 {
     public void Configure(EntityTypeBuilder<UsageCounter> builder)
     {
-        builder.ToTable("usage_counters");
+        builder.ToTable("usage_counters", "subscription_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Period).HasMaxLength(20).IsRequired();
         builder.Property(x => x.MetricKey).HasMaxLength(100).IsRequired();

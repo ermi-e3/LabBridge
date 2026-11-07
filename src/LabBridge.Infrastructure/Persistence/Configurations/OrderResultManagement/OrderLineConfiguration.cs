@@ -9,7 +9,7 @@ public sealed class OrderLineConfiguration : IEntityTypeConfiguration<OrderLine>
 {
     public void Configure(EntityTypeBuilder<OrderLine> builder)
     {
-        builder.ToTable("lab_order_line");
+        builder.ToTable("lab_order_line", "orderResult_management");
         builder.HasDomainAssignedKey();
         builder.HasTenantAlternateKey();
         builder.Property(x => x.LineNumber).IsRequired();

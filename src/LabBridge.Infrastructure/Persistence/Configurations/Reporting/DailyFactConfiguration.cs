@@ -10,7 +10,7 @@ public sealed class DailyFactConfiguration : IEntityTypeConfiguration<DailyFact>
 {
     public void Configure(EntityTypeBuilder<DailyFact> builder)
     {
-        builder.ToTable("daily_facts",
+        builder.ToTable("daily_facts", "reporting",
                         t =>
                         {
                             t.HasCheckConstraint("ck_daily_facts_count", "fact_count >= 0");

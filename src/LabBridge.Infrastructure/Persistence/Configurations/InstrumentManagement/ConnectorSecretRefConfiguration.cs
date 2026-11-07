@@ -10,7 +10,7 @@ public sealed class ConnectorSecretRefConfiguration : IEntityTypeConfiguration<C
 {
     public void Configure(EntityTypeBuilder<ConnectorSecretRef> builder)
     {
-        builder.ToTable("connector_secret_refs");
+        builder.ToTable("connector_secret_refs", "instrument_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Slot).HasMaxLength(50).IsRequired();
         builder.Property(x => x.SecretReference).HasMaxLength(300).IsRequired();

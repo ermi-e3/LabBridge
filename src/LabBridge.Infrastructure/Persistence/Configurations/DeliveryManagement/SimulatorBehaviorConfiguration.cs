@@ -11,7 +11,7 @@ public sealed class SimulatorBehaviorConfiguration : IEntityTypeConfiguration<Si
 {
     public void Configure(EntityTypeBuilder<SimulatorBehavior> builder)
     {
-        builder.ToTable("simulator_behaviors", t =>
+        builder.ToTable("simulator_behaviors", "delivery_management", t =>
         {
             t.HasCheckConstraint("ck_simulator_behaviors_remaining", "remaining_count >= 0");
             t.HasCheckConstraint("ck_simulator_behaviors_delay", "delay_seconds BETWEEN 0 AND 3600");

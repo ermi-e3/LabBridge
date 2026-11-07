@@ -13,7 +13,7 @@ public sealed class IdempotencyRecordConfiguration : IEntityTypeConfiguration<Id
     public void Configure(EntityTypeBuilder<IdempotencyRecord> builder)
     {
         // added
-        builder.ToTable("idempotency_records", t =>
+        builder.ToTable("idempotency_records", "common",t =>
         {
             t.HasCheckConstraint("ck_idempotency_records_key_length", "char_length(key) BETWEEN 16 AND 128");
             t.HasCheckConstraint("ck_idempotency_records_status", "response_status BETWEEN 100 AND 599");

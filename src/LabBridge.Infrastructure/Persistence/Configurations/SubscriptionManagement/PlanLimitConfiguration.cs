@@ -9,7 +9,7 @@ public sealed class PlanLimitConfiguration : IEntityTypeConfiguration<PlanLimit>
 {
     public void Configure(EntityTypeBuilder<PlanLimit> builder)
     {
-        builder.ToTable("plan_limits",
+        builder.ToTable("plan_limits", "subscription_management",
             t =>
             {
                 t.HasCheckConstraint("ck_plan_limits_quantity_value", "(kind = 'Quantity') = (limit_value IS NOT NULL)");

@@ -11,7 +11,7 @@ public sealed class ConnectorTestResultConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<ConnectorTestResult> builder)
     {
         //builder.ToTable("connector_test_results");
-        builder.ToTable("connector_test_results", t => t.HasCheckConstraint("ck_connector_test_results_times", "completed_at >= started_at"));
+        builder.ToTable("connector_test_results", "instrument_management", t => t.HasCheckConstraint("ck_connector_test_results_times", "completed_at >= started_at"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.ConfigVersion).IsRequired();
         builder.Property(x => x.Outcome).HasEnumAsString(15);

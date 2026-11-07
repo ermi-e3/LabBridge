@@ -15,7 +15,7 @@ public sealed class ConnectorConfiguration : IEntityTypeConfiguration<Connector>
     public void Configure(EntityTypeBuilder<Connector> builder)
     {
         builder.ToTable(
-            "connectors",
+            "connectors", "instrument_management",
             t =>
             {
                 t.HasCheckConstraint(

@@ -23,13 +23,21 @@ public sealed class AuditEventConfiguration : IEntityTypeConfiguration<AuditEven
         //        )
         //);
 
-        builder.ToTable("audit_events", t =>
+        builder.ToTable("audit_events", "audit", tb =>
         {
-            t.HasCheckConstraint("ck_audit_events_scope", "(scope = 'Platform') = (organization_id IS NULL)");
-            t.HasCheckConstraint("ck_audit_events_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
-            t.HasCheckConstraint("ck_audit_events_schema_version", "schema_version >= 1");
-            t.HasCheckConstraint("ck_audit_events_sealing", "(stream_sequence IS NULL) = (seal_id IS NULL)");
+            tb.HasCheckConstraint("ck_audit_events_scope", "(scope = 'Platform') = (organization_id IS NULL)");
+            tb.HasCheckConstraint("ck_audit_events_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
+            tb.HasCheckConstraint("ck_audit_events_schema_version", "schema_version >= 1");
+            tb.HasCheckConstraint("ck_audit_events_sealing", "(stream_sequence IS NULL) = (seal_id IS NULL)");
         });
+
+        //builder.ToTable(tb =>
+        //    {
+        //        tb.HasCheckConstraint("ck_audit_events_scope", "(scope = 'Platform') = (organization_id IS NULL)");
+        //        tb.HasCheckConstraint("ck_audit_events_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
+        //        tb.HasCheckConstraint("ck_audit_events_schema_version", "schema_version >= 1");
+        //        tb.HasCheckConstraint("ck_audit_events_sealing", "(stream_sequence IS NULL) = (seal_id IS NULL)");
+        //    });
 
         builder.HasDomainAssignedKey();
         builder.Property(x => x.ActionCode).HasMaxLength(100).IsRequired();

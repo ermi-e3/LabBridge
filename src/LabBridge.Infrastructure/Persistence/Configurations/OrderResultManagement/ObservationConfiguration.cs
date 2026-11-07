@@ -13,7 +13,7 @@ public sealed class ObservationConfiguration : IEntityTypeConfiguration<Observat
     {
         //builder.ToTable("lab_observation");
         builder.ToTable(
-                    "lab_observation",
+                    "lab_observation", "orderResult_management",
                     t =>
                     {
                         t.HasCheckConstraint("ck_lab_observation_line", "line_number >= 1");

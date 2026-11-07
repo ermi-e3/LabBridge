@@ -10,7 +10,7 @@ public sealed class AuditIntegrityCheckConfiguration : IEntityTypeConfiguration<
 {
     public void Configure(EntityTypeBuilder<AuditIntegrityCheck> builder)
     {
-        builder.ToTable("audit_integrity_checks");
+        builder.ToTable("audit_integrity_checks", "audit");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Stream).HasEnumAsString(15);
         builder.Property(x => x.RangeFrom).IsRequired();

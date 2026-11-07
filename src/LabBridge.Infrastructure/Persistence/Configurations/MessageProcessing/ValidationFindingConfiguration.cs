@@ -11,7 +11,7 @@ public sealed class ValidationFindingConfiguration : IEntityTypeConfiguration<Va
     public void Configure(EntityTypeBuilder<ValidationFinding> builder)
     {
         //builder.ToTable("validation_findings");
-        builder.ToTable("validation_findings", t =>
+        builder.ToTable("validation_findings", "message_processing", t =>
               t.HasCheckConstraint("ck_validation_findings_counts", "occurrence_count >= 1 AND (line_number IS NULL OR line_number >= 1)"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Severity).HasEnumAsString(10);

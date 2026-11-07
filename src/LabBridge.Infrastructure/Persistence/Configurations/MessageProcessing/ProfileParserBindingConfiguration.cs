@@ -12,7 +12,7 @@ public sealed class ProfileParserBindingConfiguration
 {
     public void Configure(EntityTypeBuilder<ProfileParserBinding> builder)
     {
-        builder.ToTable("profile_parser_bindings");
+        builder.ToTable("profile_parser_bindings", "message_processing");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.ConfigJson).HasJsonbColumn();
         builder.Property(x => x.Status).HasEnumAsString(10).HasDefaultValue(BindingStatus.Active);

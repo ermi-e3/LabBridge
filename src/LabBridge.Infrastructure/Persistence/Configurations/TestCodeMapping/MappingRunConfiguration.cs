@@ -11,7 +11,7 @@ public sealed class MappingRunConfiguration : IEntityTypeConfiguration<MappingRu
 {
     public void Configure(EntityTypeBuilder<MappingRun> builder)
     {
-        builder.ToTable("mapping_runs",
+        builder.ToTable("mapping_runs", "testCode_mapping",
             t =>
             {
                 t.HasCheckConstraint("ck_mapping_runs_counts", "resolution_count >= 0 AND failure_count >= 0 AND failure_count <= resolution_count");

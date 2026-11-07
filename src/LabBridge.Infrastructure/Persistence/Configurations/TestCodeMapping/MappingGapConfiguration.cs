@@ -14,7 +14,7 @@ public sealed class MappingGapConfiguration : IEntityTypeConfiguration<MappingGa
 {
     public void Configure(EntityTypeBuilder<MappingGap> builder)
     {
-        builder.ToTable("mapping_gaps",
+        builder.ToTable("mapping_gaps", "testCode_mapping",
             t =>
             {
                 t.HasCheckConstraint(

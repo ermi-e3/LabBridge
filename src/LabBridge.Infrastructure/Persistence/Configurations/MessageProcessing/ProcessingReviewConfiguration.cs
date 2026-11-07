@@ -10,7 +10,7 @@ public sealed class ProcessingReviewConfiguration : IEntityTypeConfiguration<Pro
 {
     public void Configure(EntityTypeBuilder<ProcessingReview> builder)
     {
-        builder.ToTable("processing_reviews");
+        builder.ToTable("processing_reviews", "message_processing");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Decision).HasEnumAsString(10);
         builder.Property(x => x.Reason).HasMaxLength(500).IsRequired();

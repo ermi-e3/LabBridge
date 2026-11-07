@@ -10,7 +10,7 @@ public sealed class OrganizationConfiguration : IEntityTypeConfiguration<Organiz
     public void Configure(EntityTypeBuilder<Organization> builder)
     {
         builder.ToTable(
-            "organizations",
+            "organizations", "organization_management",
             t =>
             {
                 t.HasCheckConstraint(

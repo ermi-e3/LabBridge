@@ -23,7 +23,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence("inbound_message_receipt_seq");
+            modelBuilder.HasSequence("inbound_message_receipt_seq", "ingestion");
 
             modelBuilder.Entity("LabBridge.Domain.Common.Idempotency.IdempotencyRecord", b =>
                 {
@@ -303,7 +303,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "TargetType", "TargetId");
 
-                    b.ToTable("audit_events", null, t =>
+                    b.ToTable("audit_events", "audit", t =>
                         {
                             t.HasCheckConstraint("ck_audit_events_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
 
@@ -497,7 +497,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Status", "NextAttemptAt");
 
-                    b.ToTable("audit_spool_items", (string)null);
+                    b.ToTable("audit_spool_items", "audit");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.DeliveryManagement.Entities.AcknowledgmentRecord", b =>
@@ -571,7 +571,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MatchStatus", "ReceivedAt");
 
-                    b.ToTable("acknowledgment_records", null, t =>
+                    b.ToTable("acknowledgment_records", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_acknowledgment_records_match", "(match_status = 'Matched') = (attempt_id IS NOT NULL)");
 
@@ -664,7 +664,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "DeliveryId");
 
-                    b.ToTable("delivery_attempts", null, t =>
+                    b.ToTable("delivery_attempts", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_delivery_attempts_completed", "(attempt_result = 'InProgress') = (completed_at IS NULL)");
                         });
@@ -811,7 +811,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("State", "NextAttemptAt", "ReceiptSequence");
 
-                    b.ToTable("delivery_items", null, t =>
+                    b.ToTable("delivery_items", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_delivery_items_counters", "attempt_count >= 0 AND payload_version >= 1 AND receipt_sequence > 0");
 
@@ -917,7 +917,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status", "OpenedAt");
 
-                    b.ToTable("reconciliation_cases", null, t =>
+                    b.ToTable("reconciliation_cases", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_reconciliation_cases_resolution", "(resolution IS NOT NULL) = (status = 'Resolved')");
 
@@ -996,7 +996,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Id")
                         .IsUnique();
 
-                    b.ToTable("route_delivery_policies", null, t =>
+                    b.ToTable("route_delivery_policies", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_route_delivery_policies_attempts", "max_attempts >= 1");
 
@@ -1057,7 +1057,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Id")
                         .IsUnique();
 
-                    b.ToTable("simulator_behaviors", null, t =>
+                    b.ToTable("simulator_behaviors", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_simulator_behaviors_delay", "delay_seconds BETWEEN 0 AND 3600");
 
@@ -1111,7 +1111,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "ConnectorId");
 
-                    b.ToTable("simulator_sink_messages", null, t =>
+                    b.ToTable("simulator_sink_messages", "delivery_management", t =>
                         {
                             t.HasCheckConstraint("ck_simulator_sink_messages_purged", "(content IS NULL) = (purged_at IS NOT NULL)");
                         });
@@ -1156,7 +1156,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("permissions", (string)null);
+                    b.ToTable("permissions", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.IdentityAccess.Entities.RolePermission", b =>
@@ -1173,7 +1173,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("role_permissions", (string)null);
+                    b.ToTable("role_permissions", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.IdentityAccess.Entities.UserInvitation", b =>
@@ -1226,7 +1226,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_invitations", (string)null);
+                    b.ToTable("user_invitations", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.AdapterType", b =>
@@ -1293,7 +1293,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("adapter_types", null, t =>
+                    b.ToTable("adapter_types", "instrument_management", t =>
                         {
                             t.HasCheckConstraint("ck_adapter_types_directions", "cardinality(supported_directions) >= 1");
                         });
@@ -1424,7 +1424,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status");
 
-                    b.ToTable("connectors", null, t =>
+                    b.ToTable("connectors", "instrument_management", t =>
                         {
                             t.HasCheckConstraint("ck_connectors_binding_required", "direction = 'Outbound' OR binding_key_hash IS NOT NULL");
 
@@ -1475,7 +1475,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "ConnectorId");
 
-                    b.ToTable("connector_config_revisions", (string)null);
+                    b.ToTable("connector_config_revisions", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.ConnectorHealthState", b =>
@@ -1541,7 +1541,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Id")
                         .IsUnique();
 
-                    b.ToTable("connector_health_states", (string)null);
+                    b.ToTable("connector_health_states", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.ConnectorSecretRef", b =>
@@ -1589,7 +1589,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "ConnectorId");
 
-                    b.ToTable("connector_secret_refs", (string)null);
+                    b.ToTable("connector_secret_refs", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.ConnectorTestResult", b =>
@@ -1648,7 +1648,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "ConnectorId");
 
-                    b.ToTable("connector_test_results", null, t =>
+                    b.ToTable("connector_test_results", "instrument_management", t =>
                         {
                             t.HasCheckConstraint("ck_connector_test_results_times", "completed_at >= started_at");
                         });
@@ -1720,7 +1720,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Name")
                         .IsUnique();
 
-                    b.ToTable("external_systems", (string)null);
+                    b.ToTable("external_systems", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.Instrument", b =>
@@ -1850,7 +1850,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "VerificationStatus");
 
-                    b.ToTable("instruments", null, t =>
+                    b.ToTable("instruments", "instrument_management", t =>
                         {
                             t.HasCheckConstraint("ck_instruments_class_basis", "(COALESCE(compatibility_class, '') = 'C1') = (compatibility_basis_profile_version_id IS NOT NULL)");
 
@@ -1924,7 +1924,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "InstrumentId", "PerformedAt")
                         .IsDescending(false, false, true);
 
-                    b.ToTable("instrument_verifications", (string)null);
+                    b.ToTable("instrument_verifications", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.InterfaceProfile", b =>
@@ -1963,7 +1963,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("interface_profiles", (string)null);
+                    b.ToTable("interface_profiles", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.InterfaceProfileVersion", b =>
@@ -2011,7 +2011,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("ProfileId", "Version")
                         .IsUnique();
 
-                    b.ToTable("interface_profile_versions", (string)null);
+                    b.ToTable("interface_profile_versions", "instrument_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.InstrumentManagement.Entities.Route", b =>
@@ -2100,7 +2100,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_routes_enabled_source_kind")
                         .HasFilter("status = 'Enabled'");
 
-                    b.ToTable("routes", null, t =>
+                    b.ToTable("routes", "instrument_management", t =>
                         {
                             t.HasCheckConstraint("ck_routes_endpoints_differ", "source_connector_id <> destination_connector_id");
 
@@ -2158,7 +2158,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_deduplication_keys_claim");
 
-                    b.ToTable("deduplication_keys", (string)null);
+                    b.ToTable("deduplication_keys", "message_ingestion");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.MessageIngestion.Entities.InboundMessage", b =>
@@ -2323,7 +2323,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status", "ReceivedAt");
 
-                    b.ToTable("inbound_messages", null, t =>
+                    b.ToTable("inbound_messages", "message_ingestion", t =>
                         {
                             t.HasCheckConstraint("ck_inbound_messages_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
 
@@ -2387,7 +2387,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MessageId");
 
-                    b.ToTable("inbound_message_status_history", (string)null);
+                    b.ToTable("inbound_message_status_history", "message_ingestion");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.MessageIngestion.Entities.InboundProcessingHandoff", b =>
@@ -2485,7 +2485,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Status", "AvailableAt", "ReceiptSequence");
 
-                    b.ToTable("inbound_processing_handoffs", null, t =>
+                    b.ToTable("inbound_processing_handoffs", "message_ingestion", t =>
                         {
                             t.HasCheckConstraint("ck_handoffs_claim", "(status = 'Claimed') = (claimed_by IS NOT NULL AND lease_expires_at IS NOT NULL)");
 
@@ -2559,7 +2559,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "RefusedAt")
                         .IsDescending(false, true);
 
-                    b.ToTable("inbound_refusals", null, t =>
+                    b.ToTable("inbound_refusals", "message_ingestion", t =>
                         {
                             t.HasCheckConstraint("ck_inbound_refusals_size", "size_bytes IS NULL OR size_bytes >= 0");
                         });
@@ -2623,7 +2623,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "StoredAt");
 
-                    b.ToTable("raw_payloads", null, t =>
+                    b.ToTable("raw_payloads", "message_ingestion", t =>
                         {
                             t.HasCheckConstraint("ck_raw_payloads_content_or_purged", "(content IS NOT NULL) <> (purged_at IS NOT NULL)");
 
@@ -2727,7 +2727,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Consumer", "Status", "AvailableAt", "ReceiptSequence");
 
-                    b.ToTable("normalized_handoffs", null, t =>
+                    b.ToTable("normalized_handoffs", "message_processing", t =>
                         {
                             t.HasCheckConstraint("ck_normalized_handoffs_lease", "(status = 'Claimed') = (claimed_by IS NOT NULL AND lease_expires_at IS NOT NULL)");
                         });
@@ -2817,7 +2817,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MessageId", "RunId");
 
-                    b.ToTable("normalized_messages", null, t =>
+                    b.ToTable("normalized_messages", "message_processing", t =>
                         {
                             t.HasCheckConstraint("ck_normalized_messages_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
 
@@ -2887,7 +2887,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Code", "Version")
                         .IsUnique();
 
-                    b.ToTable("parser_types", null, t =>
+                    b.ToTable("parser_types", "message_processing", t =>
                         {
                             t.HasCheckConstraint("ck_parser_types_kinds", "cardinality(supported_message_kinds) >= 1");
                         });
@@ -2937,7 +2937,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MessageId", "RunId");
 
-                    b.ToTable("processing_reviews", (string)null);
+                    b.ToTable("processing_reviews", "message_processing");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.MessageProcessing.Entities.ProcessingRun", b =>
@@ -3064,7 +3064,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Status", "NextAttemptAt");
 
-                    b.ToTable("processing_runs", null, t =>
+                    b.ToTable("processing_runs", "message_processing", t =>
                         {
                             t.HasCheckConstraint("ck_processing_runs_in_progress", "status <> 'InProgress' OR (worker_id IS NOT NULL AND started_at IS NOT NULL)");
 
@@ -3113,7 +3113,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_profile_parser_bindings_active")
                         .HasFilter("status = 'Active'");
 
-                    b.ToTable("profile_parser_bindings", (string)null);
+                    b.ToTable("profile_parser_bindings", "message_processing");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.MessageProcessing.Entities.ValidationFinding", b =>
@@ -3179,7 +3179,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MessageId", "RunId");
 
-                    b.ToTable("validation_findings", null, t =>
+                    b.ToTable("validation_findings", "message_processing", t =>
                         {
                             t.HasCheckConstraint("ck_validation_findings_counts", "occurrence_count >= 1 AND (line_number IS NULL OR line_number >= 1)");
                         });
@@ -3287,7 +3287,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status", "OpenedAt");
 
-                    b.ToTable("alerts", null, t =>
+                    b.ToTable("alerts", "monitoring", t =>
                         {
                             t.HasCheckConstraint("ck_alerts_acknowledged", "status <> 'Acknowledged' OR acknowledged_at IS NOT NULL");
 
@@ -3352,7 +3352,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("RuleCode")
                         .IsUnique();
 
-                    b.ToTable("alert_rules", (string)null);
+                    b.ToTable("alert_rules", "monitoring");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.Monitoring.Entities.AlertRuleSetting", b =>
@@ -3404,7 +3404,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "AlertRuleId")
                         .IsUnique();
 
-                    b.ToTable("alert_rule_settings", (string)null);
+                    b.ToTable("alert_rule_settings", "monitoring");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.Monitoring.Entities.AlertStateHistory", b =>
@@ -3445,7 +3445,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("AlertId", "ChangedAt");
 
-                    b.ToTable("alert_state_history", (string)null);
+                    b.ToTable("alert_state_history", "monitoring");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.Monitoring.Entities.ConnectorHealthSnapshot", b =>
@@ -3513,7 +3513,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "ConnectorId");
 
-                    b.ToTable("connector_health_snapshots", null, t =>
+                    b.ToTable("connector_health_snapshots", "monitoring", t =>
                         {
                             t.HasCheckConstraint("ck_connector_health_snapshots_version", "config_version >= 1");
                         });
@@ -3568,7 +3568,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_metric_samples_key");
 
-                    b.ToTable("metric_samples", null, t =>
+                    b.ToTable("metric_samples", "monitoring", t =>
                         {
                             t.HasCheckConstraint("ck_metric_samples_counter", "kind <> 'Counter' OR value >= 0");
                         });
@@ -3675,7 +3675,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("SubjectType", "SubjectId", "PayloadVersion")
                         .IsUnique();
 
-                    b.ToTable("delivery_requests", null, t =>
+                    b.ToTable("delivery_requests", "orderResult_management", t =>
                         {
                             t.HasCheckConstraint("ck_delivery_requests_counters", "attempt_count >= 0 AND payload_version >= 1 AND receipt_sequence > 0");
 
@@ -3815,7 +3815,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("ResultId", "LineNumber")
                         .IsUnique();
 
-                    b.ToTable("lab_observation", null, t =>
+                    b.ToTable("lab_observation", "orderResult_management", t =>
                         {
                             t.HasCheckConstraint("ck_lab_observation_conversion", "conversion_applied = (conversion_rule_id IS NOT NULL)");
 
@@ -4054,7 +4054,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "TargetInstrumentId", "Status");
 
-                    b.ToTable("lab_order", null, t =>
+                    b.ToTable("lab_order", "orderResult_management", t =>
                         {
                             t.HasCheckConstraint("ck_lab_order_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
 
@@ -4115,7 +4115,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "OrderId");
 
-                    b.ToTable("lab_order_line", (string)null);
+                    b.ToTable("lab_order_line", "orderResult_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.OrderResultManagement.Entities.OrderStatusHistory", b =>
@@ -4182,7 +4182,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "OrderId");
 
-                    b.ToTable("lab_order_status_history", (string)null);
+                    b.ToTable("lab_order_status_history", "orderResult_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.OrderResultManagement.Entities.Result", b =>
@@ -4385,7 +4385,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status", "CreatedAt");
 
-                    b.ToTable("lab_result", null, t =>
+                    b.ToTable("lab_result", "orderResult_management", t =>
                         {
                             t.HasCheckConstraint("ck_lab_result_content_hash", "content_hash ~ '^[0-9a-f]{64}$'");
 
@@ -4463,7 +4463,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ResultId", "ChangedAt");
 
-                    b.ToTable("lab_result_status_history", (string)null);
+                    b.ToTable("lab_result_status_history", "orderResult_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.OrganizationManagement.Entities.Organization", b =>
@@ -4562,7 +4562,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("Status");
 
-                    b.ToTable("organizations", null, t =>
+                    b.ToTable("organizations", "organization_management", t =>
                         {
                             t.HasCheckConstraint("ck_organizations_code_format", "code ~ '^[a-z0-9]+(-[a-z0-9]+)*$' AND char_length(code) BETWEEN 3 AND 40");
 
@@ -4626,7 +4626,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "SettingDefinitionId")
                         .IsUnique();
 
-                    b.ToTable("organization_settings", null, t =>
+                    b.ToTable("organization_settings", "organization_management", t =>
                         {
                             t.HasCheckConstraint("ck_organization_settings_version", "version >= 1");
                         });
@@ -4687,7 +4687,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "StatusVersion")
                         .IsUnique();
 
-                    b.ToTable("organization_status_history", null, t =>
+                    b.ToTable("organization_status_history", "organization_management", t =>
                         {
                             t.HasCheckConstraint("ck_organization_status_history_change", "from_status IS NULL OR from_status <> to_status");
 
@@ -4762,7 +4762,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Key")
                         .IsUnique();
 
-                    b.ToTable("setting_definitions", (string)null);
+                    b.ToTable("setting_definitions", "organization_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.Reporting.Entities.DailyFact", b =>
@@ -4835,7 +4835,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_daily_facts_key");
 
-                    b.ToTable("daily_facts", null, t =>
+                    b.ToTable("daily_facts", "reporting", t =>
                         {
                             t.HasCheckConstraint("ck_daily_facts_aggregates", "(sum_value IS NULL) = (min_value IS NULL) AND (min_value IS NULL) = (max_value IS NULL)");
 
@@ -4883,7 +4883,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasKey("ReportCode");
 
-                    b.ToTable("report_definitions", (string)null);
+                    b.ToTable("report_definitions", "reporting");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.Reporting.Entities.ReportRun", b =>
@@ -4969,7 +4969,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasFilter("request_key IS NOT NULL");
 
-                    b.ToTable("report_runs", null, t =>
+                    b.ToTable("report_runs", "reporting", t =>
                         {
                             t.HasCheckConstraint("ck_report_runs_completed", "(status = 'Running') = (completed_at IS NULL)");
 
@@ -5020,7 +5020,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasKey("LimitKey");
 
-                    b.ToTable("limit_definitions", (string)null);
+                    b.ToTable("limit_definitions", "subscription_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.SubscriptionManagement.Entities.Plan", b =>
@@ -5076,7 +5076,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("Code", "Version")
                         .IsUnique();
 
-                    b.ToTable("plans", null, t =>
+                    b.ToTable("plans", "subscription_management", t =>
                         {
                             t.HasCheckConstraint("ck_plans_published_at", "(status = 'Draft') = (published_at IS NULL)");
 
@@ -5134,7 +5134,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("LimitKey", "Kind", "IsMessageVolume");
 
-                    b.ToTable("plan_limits", null, t =>
+                    b.ToTable("plan_limits", "subscription_management", t =>
                         {
                             t.HasCheckConstraint("ck_plan_limits_feature_flag", "kind = 'Feature' OR NOT feature_enabled");
 
@@ -5191,7 +5191,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("PlanId");
 
-                    b.ToTable("subscriptions", (string)null);
+                    b.ToTable("subscriptions", "subscription_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.SubscriptionManagement.Entities.SubscriptionHistory", b =>
@@ -5250,7 +5250,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("SubscriptionId", "ChangedAt");
 
-                    b.ToTable("subscription_history", null, t =>
+                    b.ToTable("subscription_history", "subscription_management", t =>
                         {
                             t.HasCheckConstraint("ck_subscription_history_from", "(from_plan_id IS NULL) = (from_status IS NULL)");
                         });
@@ -5292,7 +5292,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Period", "MetricKey")
                         .IsUnique();
 
-                    b.ToTable("usage_counters", (string)null);
+                    b.ToTable("usage_counters", "subscription_management");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.TestCodeMapping.Entities.CanonicalConcept", b =>
@@ -5363,7 +5363,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "Domain", "Code")
                         .IsUnique();
 
-                    b.ToTable("canonical_concepts", (string)null);
+                    b.ToTable("canonical_concepts", "testCode_mapping");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.TestCodeMapping.Entities.MappingEntry", b =>
@@ -5455,7 +5455,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_mapping_entries_code_system")
                         .HasFilter("direction = 'ToCanonical' AND external_code_system IS NOT NULL");
 
-                    b.ToTable("mapping_entries", (string)null);
+                    b.ToTable("mapping_entries", "testCode_mapping");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.TestCodeMapping.Entities.MappingGap", b =>
@@ -5583,7 +5583,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_mapping_gaps_code_system")
                         .HasFilter("status IN ('Open','Ignored') AND code IS NOT NULL AND code_system IS NOT NULL");
 
-                    b.ToTable("mapping_gaps", null, t =>
+                    b.ToTable("mapping_gaps", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_mapping_gaps_counts", "occurrence_count >= 1 AND last_seen_at >= first_seen_at");
 
@@ -5628,7 +5628,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("SubjectType", "SubjectId");
 
-                    b.ToTable("mapping_gap_subjects", (string)null);
+                    b.ToTable("mapping_gap_subjects", "testCode_mapping");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Features.TestCodeMapping.Entities.MappingResolution", b =>
@@ -5727,7 +5727,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("RunId", "LineNumber");
 
-                    b.ToTable("mapping_resolutions", null, t =>
+                    b.ToTable("mapping_resolutions", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_mapping_resolutions_conversion", "conversion_applied = (conversion_rule_id IS NOT NULL)");
 
@@ -5819,7 +5819,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "SubjectType", "SubjectId");
 
-                    b.ToTable("mapping_runs", null, t =>
+                    b.ToTable("mapping_runs", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_mapping_runs_counts", "resolution_count >= 0 AND failure_count >= 0 AND failure_count <= resolution_count");
 
@@ -5913,7 +5913,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_mapping_sets_instrument")
                         .HasFilter("instrument_id IS NOT NULL");
 
-                    b.ToTable("mapping_sets", null, t =>
+                    b.ToTable("mapping_sets", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_mapping_sets_counterparty", "(instrument_id IS NULL) <> (external_system_id IS NULL)");
                         });
@@ -6010,7 +6010,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "MappingSetId");
 
-                    b.ToTable("mapping_set_versions", null, t =>
+                    b.ToTable("mapping_set_versions", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_mapping_set_versions_draft", "(status = 'Draft') = (published_at IS NULL)");
 
@@ -6126,7 +6126,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_unit_conversion_rules_approved")
                         .HasFilter("status = 'Approved'");
 
-                    b.ToTable("unit_conversion_rules", null, t =>
+                    b.ToTable("unit_conversion_rules", "testCode_mapping", t =>
                         {
                             t.HasCheckConstraint("ck_unit_conversion_rules_approval", "(status IN ('Approved','Retired')) = (approved_at IS NOT NULL AND approved_by IS NOT NULL)");
 
@@ -6202,7 +6202,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ux_roles_normalized_name");
 
-                    b.ToTable("roles", (string)null);
+                    b.ToTable("roles", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUser", b =>
@@ -6350,7 +6350,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "Status");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUserRole", b =>
@@ -6381,7 +6381,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("OrganizationId", "RoleId");
 
-                    b.ToTable("user_role_assignments", (string)null);
+                    b.ToTable("user_role_assignments", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -6409,7 +6409,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("role_claims", (string)null);
+                    b.ToTable("role_claims", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -6437,7 +6437,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("user_claims", (string)null);
+                    b.ToTable("user_claims", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -6465,7 +6465,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("external_identities", (string)null);
+                    b.ToTable("external_identities", "identity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -6488,7 +6488,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("user_tokens", (string)null);
+                    b.ToTable("user_tokens", "identity");
                 });
 
             modelBuilder.Entity("LabBridge.Domain.Common.Idempotency.IdempotencyRecord", b =>

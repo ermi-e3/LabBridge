@@ -10,7 +10,7 @@ public sealed class MappingResolutionConfiguration : IEntityTypeConfiguration<Ma
 {
     public void Configure(EntityTypeBuilder<MappingResolution> builder)
     {
-        builder.ToTable("mapping_resolutions",
+        builder.ToTable("mapping_resolutions", "testCode_mapping",
             t =>
             {
                 t.HasCheckConstraint("ck_mapping_resolutions_failure", "(resolution_type = 'Failed') = (failure_reason IS NOT NULL)");

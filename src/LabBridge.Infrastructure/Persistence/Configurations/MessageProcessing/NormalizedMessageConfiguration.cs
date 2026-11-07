@@ -12,7 +12,7 @@ public sealed class NormalizedMessageConfiguration : IEntityTypeConfiguration<No
     public void Configure(EntityTypeBuilder<NormalizedMessage> builder)
     {
         builder.ToTable(
-            "normalized_messages",
+            "normalized_messages", "message_processing",
             t =>
                 {
                     t.HasCheckConstraint(

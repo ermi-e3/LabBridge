@@ -12,7 +12,7 @@ public sealed class ConnectorHealthSnapshotConfiguration
     public void Configure(EntityTypeBuilder<ConnectorHealthSnapshot> builder)
     {
         //builder.ToTable("connector_health_snapshots");
-        builder.ToTable("connector_health_snapshots", t => t.HasCheckConstraint("ck_connector_health_snapshots_version", "config_version >= 1"));
+        builder.ToTable("connector_health_snapshots", "monitoring", t => t.HasCheckConstraint("ck_connector_health_snapshots_version", "config_version >= 1"));
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Status).HasEnumAsString(15);
         builder.Property(x => x.PreviousStatus).HasEnumAsString(15);

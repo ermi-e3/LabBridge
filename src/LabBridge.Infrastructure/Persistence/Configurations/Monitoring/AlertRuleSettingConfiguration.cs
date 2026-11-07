@@ -9,7 +9,7 @@ public sealed class AlertRuleSettingConfiguration : IEntityTypeConfiguration<Ale
 {
     public void Configure(EntityTypeBuilder<AlertRuleSetting> builder)
     {
-        builder.ToTable("alert_rule_settings");
+        builder.ToTable("alert_rule_settings", "monitoring");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.Enabled).IsRequired();
         builder.Property(x => x.Severity).HasEnumAsString(10);

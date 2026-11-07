@@ -19,7 +19,7 @@ public sealed class ApplicationUserRoleConfiguration : IEntityTypeConfiguration<
     public void Configure(EntityTypeBuilder<ApplicationUserRole> builder)
     {
         // Table name kept from the previous model.
-        builder.ToTable("user_role_assignments");
+        builder.ToTable("user_role_assignments", "identity");
 
         builder.Property(x => x.AssignedAt).IsRequired();
 

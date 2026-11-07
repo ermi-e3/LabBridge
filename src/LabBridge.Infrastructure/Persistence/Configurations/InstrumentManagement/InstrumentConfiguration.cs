@@ -12,7 +12,7 @@ public sealed class InstrumentConfiguration : IEntityTypeConfiguration<Instrumen
     public void Configure(EntityTypeBuilder<Instrument> builder)
     {
         builder.ToTable(
-            "instruments",
+            "instruments", "instrument_management",
             t =>
             {
                 t.HasCheckConstraint(

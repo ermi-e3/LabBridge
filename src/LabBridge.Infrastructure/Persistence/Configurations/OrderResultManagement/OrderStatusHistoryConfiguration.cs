@@ -9,7 +9,7 @@ public sealed class OrderStatusHistoryConfiguration : IEntityTypeConfiguration<O
 {
     public void Configure(EntityTypeBuilder<OrderStatusHistory> builder)
     {
-        builder.ToTable("lab_order_status_history");
+        builder.ToTable("lab_order_status_history", "orderResult_management");
         builder.HasDomainAssignedKey();
         builder.Property(x => x.FromStatus).HasEnumAsString(20);
         builder.Property(x => x.ToStatus).HasEnumAsString(20);

@@ -18,7 +18,7 @@ public sealed class ExternalLoginConfiguration : IEntityTypeConfiguration<Identi
 {
     public void Configure(EntityTypeBuilder<IdentityUserLogin<Guid>> builder)
     {
-        builder.ToTable("external_identities");
+        builder.ToTable("external_identities", "identity");
 
         // CHANGE: lengths match the previous ExternalIdentity limits (issuer 500, subject 255).
         builder.Property(x => x.LoginProvider).HasMaxLength(500);
