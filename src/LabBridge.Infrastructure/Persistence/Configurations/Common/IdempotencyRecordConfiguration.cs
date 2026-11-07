@@ -20,7 +20,7 @@ public sealed class IdempotencyRecordConfiguration : IEntityTypeConfiguration<Id
             t.HasCheckConstraint("ck_idempotency_records_expiry", "expires_at > created_at");
         });
 
-        builder.ToTable("idempotency_records");
+        //builder.ToTable("idempotency_records");
         builder.HasDomainAssignedKey();
         //builder.Property(x => x.Key).HasMaxLength(128).IsRequired();
         builder.Property(x => x.Key).HasCaseInsensitiveText(128).IsRequired();

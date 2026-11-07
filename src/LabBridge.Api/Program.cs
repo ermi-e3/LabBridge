@@ -1,5 +1,7 @@
 
+using LabBridge.Domain.Features.Audit.Entities;
 using LabBridge.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,21 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+//Console.WriteLine("========== DIAGNOSTIC STARTED ==========");
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider
+//        .GetRequiredService<LabBridgeDbContext>();
+
+//    var entityType = dbContext.Model.FindEntityType(typeof(AuditSeal));
+
+//    Console.WriteLine($"Entity found: {entityType is not null}");
+//    Console.WriteLine($"Table: {entityType?.GetTableName() ?? "<null>"}");
+//    Console.WriteLine($"Schema: {entityType?.GetSchema() ?? "<null>"}");
+//}
+
+//Console.WriteLine("========== DIAGNOSTIC FINISHED ==========");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

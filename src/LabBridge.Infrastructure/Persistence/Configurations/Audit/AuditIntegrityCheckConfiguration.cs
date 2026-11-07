@@ -22,7 +22,7 @@ public sealed class AuditIntegrityCheckConfiguration : IEntityTypeConfiguration<
         builder.Property(x => x.RequestedBy).IsRequired();
         builder.Property(x => x.StartedAt).IsRequired();
 
-        builder.ToTable("audit_integrity_checks", t =>
+        builder.ToTable(t =>
         {
             t.HasCheckConstraint("ck_audit_integrity_checks_stream", "(stream = 'Platform') = (organization_id IS NULL)");
             t.HasCheckConstraint("ck_audit_integrity_checks_range", "range_to > range_from");

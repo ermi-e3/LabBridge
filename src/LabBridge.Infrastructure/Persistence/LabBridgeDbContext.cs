@@ -162,11 +162,12 @@ public class LabBridgeDbContext
 
         // Used by InboundMessageConfiguration: HasDefaultValueSql("nextval('inbound_message_receipt_seq')").
         //modelBuilder.HasSequence<long>(InboundMessageReceiptSequence);
-        modelBuilder.HasSequence<long>(InboundMessageReceiptSequence, "ingestion");
+        modelBuilder.HasSequence<long>(InboundMessageReceiptSequence, "message_ingestion");
 
         // All 83 IEntityTypeConfiguration classes live in this assembly (LabBridge.Infrastructure). No namespace
         // filter: every configuration found is applied, so nothing can be silently excluded.
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrganizationConfiguration).Assembly);
+
     }
 
     // ---- Persistence guards (consolidated from AuditDbContext and IdentityAccessDbContext) ----

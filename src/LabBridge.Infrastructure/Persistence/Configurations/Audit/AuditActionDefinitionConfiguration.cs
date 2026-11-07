@@ -27,7 +27,7 @@ public sealed class AuditActionDefinitionConfiguration
         builder.Property(x => x.CreatedAt).IsRequired();
 
         // change 
-        builder.ToTable("audit_action_definitions", t => t.HasCheckConstraint("ck_audit_action_definitions_trace", "is_traced = (trace_stage IS NOT NULL)"));
+        builder.ToTable( t => t.HasCheckConstraint("ck_audit_action_definitions_trace", "is_traced = (trace_stage IS NOT NULL)"));
         builder.UseSnakeCaseColumns();
     }
 }

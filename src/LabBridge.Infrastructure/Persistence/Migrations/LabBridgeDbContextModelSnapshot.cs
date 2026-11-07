@@ -23,7 +23,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "citext");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.HasSequence("inbound_message_receipt_seq", "ingestion");
+            modelBuilder.HasSequence("inbound_message_receipt_seq", "message_ingestion");
 
             modelBuilder.Entity("LabBridge.Domain.Common.Idempotency.IdempotencyRecord", b =>
                 {
@@ -77,7 +77,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_idempotency_org_key")
                         .HasFilter("organization_id IS NOT NULL");
 
-                    b.ToTable("idempotency_records", null, t =>
+                    b.ToTable("idempotency_records", "common", t =>
                         {
                             t.HasCheckConstraint("ck_idempotency_records_expiry", "expires_at > created_at");
 
@@ -141,7 +141,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
                     b.HasKey("ActionCode");
 
-                    b.ToTable("audit_action_definitions", null, t =>
+                    b.ToTable("audit_action_definitions", "audit", t =>
                         {
                             t.HasCheckConstraint("ck_audit_action_definitions_trace", "is_traced = (trace_stage IS NOT NULL)");
                         });
@@ -366,7 +366,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.HasIndex("OrganizationId", "StartedAt")
                         .IsDescending(false, true);
 
-                    b.ToTable("audit_integrity_checks", null, t =>
+                    b.ToTable("audit_integrity_checks", "audit", t =>
                         {
                             t.HasCheckConstraint("ck_audit_integrity_checks_completed", "(status = 'Running') = (completed_at IS NULL)");
 
@@ -431,7 +431,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ux_audit_seals_org_sequence")
                         .HasFilter("organization_id IS NOT NULL");
 
-                    b.ToTable("audit_seals", null, t =>
+                    b.ToTable("audit_seals", "audit", t =>
                         {
                             t.HasCheckConstraint("ck_audit_seals_block_hash", "block_hash ~ '^[0-9a-f]{64}$'");
 
