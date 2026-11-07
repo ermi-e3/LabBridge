@@ -7,6 +7,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
 
+# ignore appsettings files that may contain sensitive information
+appsettings.json
+appsettings.Development.json
+
+# Ignore Visual Studio temporary files
+.vs/
+*.user
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
