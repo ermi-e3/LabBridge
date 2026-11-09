@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="Features\OrganizationManagement\Organization\DTOs\" />
     <Folder Include="Shared\DTOs\" />
   </ItemGroup>
