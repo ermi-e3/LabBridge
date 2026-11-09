@@ -1,3 +1,4 @@
+using LabBridge.Domain.Features.OrganizationManagement;
 using LabBridge.Domain.Features.OrganizationManagement.Entities;
 using LabBridge.Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;

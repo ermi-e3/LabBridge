@@ -4,6 +4,7 @@ using LabBridge.Api.Filters;
 using LabBridge.Api.Middlewares;
 using LabBridge.Application;
 using LabBridge.Infrastructure;
+using Scalar.AspNetCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,7 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
