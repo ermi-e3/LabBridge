@@ -42,7 +42,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.Property<string>("Fingerprint")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("citext")
+                        .HasColumnType("character varying(128)")
                         .HasColumnName("fingerprint");
 
                     b.Property<string>("Key")
@@ -51,39 +51,73 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasColumnType("citext")
                         .HasColumnName("key");
 
+                    b.Property<string>("OperationScope")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("citext")
+                        .HasColumnName("operation_scope");
+
                     b.Property<Guid?>("OrganizationId")
                         .HasColumnType("uuid")
                         .HasColumnName("organization_id");
+
+                    b.Property<Guid>("ReservationToken")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reservation_token");
 
                     b.Property<string>("ResponseBody")
                         .HasColumnType("text")
                         .HasColumnName("response_body");
 
-                    b.Property<int>("ResponseStatus")
+                    b.Property<string>("ResponseContentType")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
+                        .HasColumnName("response_content_type");
+
+                    b.Property<string>("ResponseHeaders")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("response_headers");
+
+                    b.Property<int?>("ResponseStatus")
                         .HasColumnType("integer")
                         .HasColumnName("response_status");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("status");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ExpiresAt");
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("ix_idempotency_expires_at");
 
-                    b.HasIndex("Key")
+                    b.HasIndex("OperationScope", "Key")
                         .IsUnique()
-                        .HasDatabaseName("ux_idempotency_platform_key")
+                        .HasDatabaseName("ux_idempotency_platform_scope_key")
                         .HasFilter("organization_id IS NULL");
 
-                    b.HasIndex("OrganizationId", "Key")
+                    b.HasIndex("OrganizationId", "OperationScope", "Key")
                         .IsUnique()
-                        .HasDatabaseName("ux_idempotency_org_key")
+                        .HasDatabaseName("ux_idempotency_org_scope_key")
                         .HasFilter("organization_id IS NOT NULL");
 
                     b.ToTable("idempotency_records", "common", t =>
                         {
                             t.HasCheckConstraint("ck_idempotency_records_expiry", "expires_at > created_at");
 
+                            t.HasCheckConstraint("ck_idempotency_records_fingerprint_length", "char_length(fingerprint) BETWEEN 1 AND 128");
+
                             t.HasCheckConstraint("ck_idempotency_records_key_length", "char_length(key) BETWEEN 16 AND 128");
 
-                            t.HasCheckConstraint("ck_idempotency_records_status", "response_status BETWEEN 100 AND 599");
+                            t.HasCheckConstraint("ck_idempotency_records_operation_scope", "char_length(operation_scope) BETWEEN 1 AND 256");
+
+                            t.HasCheckConstraint("ck_idempotency_records_reservation_token", "reservation_token <> '00000000-0000-0000-0000-000000000000'");
+
+                            t.HasCheckConstraint("ck_idempotency_records_response", "(\r\n    status = 'InProgress'\r\n    AND response_status IS NULL\r\n)\r\nOR\r\n(\r\n    status = 'Completed'\r\n    AND response_status BETWEEN 100 AND 599\r\n)");
+
+                            t.HasCheckConstraint("ck_idempotency_records_status", "status IN ('InProgress', 'Completed')");
                         });
                 });
 
@@ -6144,7 +6178,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -6205,7 +6239,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.ToTable("roles", "identity");
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -6353,7 +6387,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.ToTable("users", "identity");
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -6688,7 +6722,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationRole", null)
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -6702,7 +6736,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany("Invitations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7756,7 +7790,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", b =>
                 {
                     b.HasOne("LabBridge.Domain.Features.OrganizationManagement.Entities.Organization", null)
                         .WithMany()
@@ -7764,20 +7798,20 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationUserRole", b =>
                 {
                     b.HasOne("LabBridge.Domain.Features.OrganizationManagement.Entities.Organization", null)
                         .WithMany()
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany("RoleAssignments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7786,7 +7820,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationRole", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7795,7 +7829,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7804,7 +7838,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7813,7 +7847,7 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("LabBridge.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7884,12 +7918,12 @@ namespace LabBridge.Infrastructure.Persistence.Migrations
                     b.Navigation("Entries");
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationRole", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("LabBridge.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("LabBridge.Infrastructure.Identity.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("Invitations");
 

@@ -1,4 +1,7 @@
-﻿using LabBridge.Infrastructure.Identity.Entities;
+﻿using LabBridge.Application.Common.CurrentUser;
+using LabBridge.Application.Common.Idempotency;
+using LabBridge.Infrastructure.Common;
+using LabBridge.Infrastructure.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +59,17 @@ public static class DependencyInjection
             .AddIdentityCore<ApplicationUser>()
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<LabBridgeDbContext>();
+
+        // IIdempotency
+        // IIdempotencyService is a scoped service that manages idempotency records in the database. It is registered with the dependency injection container so that it can be injected into other services or controllers that require idempotency functionality.
+        services.AddScoped<IIdempotencyService, IdempotencyService>();
+
+        // CurrentUserService is a scoped service that provides information about the currently authenticated user. It is registered with the dependency injection container so that it can be injected into other services or controllers that require access to the current user's information.
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+
+
+
 
         return services;
     }

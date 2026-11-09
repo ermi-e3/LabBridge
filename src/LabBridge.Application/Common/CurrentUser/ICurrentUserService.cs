@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LabBridge.Application.Common;
+namespace LabBridge.Application.Common.CurrentUser;
 
 
 public interface ICurrentUserService

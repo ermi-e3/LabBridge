@@ -1,6 +1,6 @@
-﻿using LabBridge.Application.Common;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using LabBridge.Application.Common.CurrentUser;
 
 
 namespace LabBridge.Infrastructure.Common;
@@ -34,22 +34,7 @@ public class CurrentUserService : ICurrentUserService
         }
     }
 
-
     private ClaimsPrincipal? Principal => _httpContextAccessor.HttpContext?.User;
-
-    //public bool IsAuthenticated =>
-    //    Principal?.Identity?.IsAuthenticated == true;
-
-    //public Guid? UserId
-    //{
-    //    get
-    //    {
-    //        var value = Principal?.FindFirstValue(
-    //            ClaimTypes.NameIdentifier);
-
-    //        return Guid.TryParse(value, out var id) ? id : null;
-    //    }
-    //}
 
     public string? Email => Principal?.FindFirstValue(ClaimTypes.Email);
 
