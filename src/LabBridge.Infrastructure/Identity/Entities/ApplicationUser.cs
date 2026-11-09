@@ -7,7 +7,7 @@ using LabBridge.Domain.Features.IdentityAccess.Entities;
 using LabBridge.Domain.Features.IdentityAccess.Enums;
 using Microsoft.AspNetCore.Identity;
 
-namespace LabBridge.Infrastructure.Identity;
+namespace LabBridge.Infrastructure.Identity.Entities;
 
 /// <summary>
 /// LabBridge user as an ASP.NET Core Identity user (organization user, or platform user when OrganizationId is null).

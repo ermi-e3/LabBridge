@@ -12,7 +12,7 @@ using LabBridge.Domain.Features.OrganizationManagement.Entities;
 using LabBridge.Domain.Features.Reporting.Entities;
 using LabBridge.Domain.Features.SubscriptionManagement.Entities;
 using LabBridge.Domain.Features.TestCodeMapping.Entities;
-using LabBridge.Infrastructure.Identity;
+using LabBridge.Infrastructure.Identity.Entities;
 using LabBridge.Infrastructure.Persistence.Configurations.OrganizationManagement;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

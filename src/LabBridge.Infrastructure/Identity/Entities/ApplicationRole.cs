@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 
-namespace LabBridge.Infrastructure.Identity;
+namespace LabBridge.Infrastructure.Identity.Entities;
 
 /// <summary>
 /// System role as an ASP.NET Core Identity role (platform reference data, changed only through released migrations, BR-IAM-011).

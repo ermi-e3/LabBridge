@@ -1,4 +1,4 @@
-﻿using LabBridge.Infrastructure.Identity;
+﻿using LabBridge.Infrastructure.Identity.Entities;
 using LabBridge.Infrastructure.Persistence.Configurations.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

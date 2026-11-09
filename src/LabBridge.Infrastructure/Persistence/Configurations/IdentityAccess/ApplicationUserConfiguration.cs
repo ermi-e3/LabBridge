@@ -1,6 +1,6 @@
 ﻿using LabBridge.Domain.Common.ValueObjects;
 using LabBridge.Domain.Features.OrganizationManagement.Entities;
-using LabBridge.Infrastructure.Identity;
+using LabBridge.Infrastructure.Identity.Entities;
 using LabBridge.Infrastructure.Persistence.Configurations.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

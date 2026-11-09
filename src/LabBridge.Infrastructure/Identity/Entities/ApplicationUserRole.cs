@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LabBridge.Infrastructure.Identity;
+namespace LabBridge.Infrastructure.Identity.Entities;
 
 /// <summary>
 /// Assignment of a role to a user (canonical authorization data). OrganizationId mirrors the user's organization

@@ -1,4 +1,4 @@
-﻿using LabBridge.Infrastructure.Identity;
+﻿using LabBridge.Infrastructure.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +26,7 @@ public static class DependencyInjection
                     + "Supply it through user-secrets (Development) or the ConnectionStrings__Default environment variable."
             );
 
-        var commandTimeoutSeconds = int.TryParse(configuration["Persistence:CommandTimeoutSeconds"], out var timeout) && timeout > 0 ? timeout : 30;
+        //var commandTimeoutSeconds = int.TryParse(configuration["Persistence:CommandTimeoutSeconds"], out var timeout) && timeout > 0 ? timeout : 30;
         var sensitiveLogging = bool.TryParse(configuration["Persistence:EnableSensitiveDataLogging"], out var s) && s;
         var detailedErrors = bool.TryParse(configuration["Persistence:EnableDetailedErrors"], out var d) && d;
 
@@ -41,7 +41,7 @@ public static class DependencyInjection
                 npgsql =>
                 {
                     npgsql.MigrationsAssembly(typeof(LabBridgeDbContext).Assembly.GetName().Name);
-                    npgsql.CommandTimeout(commandTimeoutSeconds);
+                    //npgsql.CommandTimeout(commandTimeoutSeconds);
                 }
             );
             if (sensitiveLogging)
